@@ -1,27 +1,14 @@
 import re
 from collections import defaultdict
 
-
 def read_file(file_name):
     with open(file_name, 'r') as file:
         return file.read()
 
-#remove all elements before <body>
-def parse_file(formatted_file, keyword):
-    keyword_index = file.index(keyword)
-    formatted_file = file[keyword_index:]
-    print(formatted_file)
-    return formatted_file
-
-#strips tags down to their element name only
-def format_file(file):
-    file = re.findall("<.*>", file)
-    return file
-
-
-#format the dom elements
+#format the dom elements into key:value pairs
 def format_elements(parsed_file):
-    format = re.sub("<nav.*>", "<nav>", parsed_file)
+    format = re.sub(r'[\s\S]*?(?=<body>)', '', parsed_file, flags=re.IGNORECASE)
+    format = re.sub("<nav.*>", "<nav>", format)
     format = re.sub("<a.*>", "<a>", format)
     format = re.sub("<script.*>", "<script> </script>", format)
     format = re.sub("<img.*>", "<img></img>", format)
@@ -50,9 +37,6 @@ def organize_tags(format):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     file = read_file("/home/william/saas-landing-page/index.html")
-
-    formatted_file = format_file(file)
-    parsed_file = parse_file(formatted_file, "<body>")
-    print(format_elements(parsed_file))
+    print(format_elements(file))
 
 ##TODO: add logic to add the missing closing tags, this will be done in organize_tags and maybe a helper function.
