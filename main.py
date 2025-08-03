@@ -10,12 +10,12 @@ def format_elements(parsed_file):
     format = re.sub(r'\s+', ' ', parsed_file) #flattens file to one line
     format = re.sub(r'[\s\S]*?(?=<body>)', '', format) #removes from beginning of file up to (not including) <body>)
     format = re.sub(r'</body>.*', '</body>', format) #deletes anything after </body>
+    format = re.sub("<div.*?>", "<div>", format) #cleans up open div tag and adds closing tag
     format = re.sub("<nav.*?>", "<nav>", format) #cleans up open nav tag
     format = re.sub("<a.*?>", "<a>", format) #cleans up open a tag
-    format = re.sub("<script.*?>", "<script><script>", format) #cleans up open script tag and adds closing tag
-    format = re.sub("<img.*?>", "<img></img>", format) #cleans up open img tag and adds closing tag
-    format = re.sub("<i.*?>", "<i>", format) #cleans up open i tag and adds closing tag
-    format = re.sub("<div.*?>", "<div>", format) #cleans up open div tag and adds closing tag
+    format = re.sub("<img.*?>", "<img> </img>", format) #cleans up open img tag and adds closing tag
+    format = re.sub("<script.*?>", "<script> ", format) #cleans up open script tag and adds closing tag
+    format = re.sub("<i[^mg]*?>", "<i> ", format) #cleans up open i tag and adds closing tag
     format = re.sub("(?<=>).*?(?=<)", "", format) #deletes all text between elements
     #organize_tags(format)
     return format
