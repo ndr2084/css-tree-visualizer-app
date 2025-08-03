@@ -43,6 +43,34 @@ def organize_tags(format):
 
     print (opening_tags)
     print (closing_tags)
+    assign_tag_height(element_list)
+
+def assign_tag_height(element_list):
+    height = 0
+    last_tag_open = True
+    for element in element_list:
+        if element[1].isalpha() and last_tag_open == True:
+            print(height, element)
+            height += 1
+            last_tag_open = True
+
+        if element[1].isalpha() and last_tag_open == False:
+            print(height, element)
+            height += 2
+            last_tag_open = True
+
+        if element[1] == "/" and last_tag_open == True:
+            height -= 1
+            last_tag_open = False
+
+        if element[1] == "/" and last_tag_open == False:
+            print(height, element)
+            height -= 1
+
+
+
+
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
