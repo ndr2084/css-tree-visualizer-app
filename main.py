@@ -25,18 +25,28 @@ def organize_tags(format):
     closing_tags = defaultdict(list)
     opening_tags = defaultdict(list)
     element_list = format.split(" ")
-    print(element_list)
+    #print(element_list)
     for element in element_list:
+        print(element[1])
         if element[1] == "/":
             closing_tags[element].append(index)
-        opening_tags[element].append(index)
-        index += 1
+            index += 1
+            continue
+
+        if element[1].isalpha():
+            opening_tags[element].append(index)
+            index += 1
+            continue
+
+        else:
+            raise Exception(f"HTML element formatting error: start of tag neither [a-zA-z] nor /: {element}, {element[1]}")
+
     print (opening_tags)
     print (closing_tags)
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     file = read_file("/home/william/saas-landing-page/index.html")
-    print(format_elements(file))
+    (format_elements(file))
 
 ##TODO: add logic to add the missing closing tags, this will be done in organize_tags and maybe a helper function.
