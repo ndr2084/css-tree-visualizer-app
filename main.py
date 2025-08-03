@@ -16,8 +16,8 @@ def format_elements(parsed_file):
     format = re.sub("<img.*?>", "<img> </img>", format) #cleans up open img tag and adds closing tag
     format = re.sub("<script.*?>", "<script> ", format) #cleans up open script tag and adds closing tag
     format = re.sub("<i[^mg]*?>", "<i> ", format) #cleans up open i tag and adds closing tag
-    format = re.sub("(?<=>).*?(?=<)", "", format) #deletes all text between elements
-    #organize_tags(format)
+    format = re.sub("(?<=>).*?(?=<)", " ", format) #deletes all text between elements
+    organize_tags(format)
     return format
 
 def organize_tags(format):
