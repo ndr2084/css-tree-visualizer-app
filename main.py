@@ -7,17 +7,17 @@ def read_file(file_name):
 
 #format the dom elements into key:value pairs
 def format_elements(parsed_file):
-    format = re.sub(r'[\s\S]*?(?=<body>)', '', parsed_file, flags=re.IGNORECASE)
-    format = re.sub("<nav.*>", "<nav>", format)
-    format = re.sub("<a.*>", "<a>", format)
-    format = re.sub("<script.*>", "<script> </script>", format)
-    format = re.sub("<img.*>", "<img></img>", format)
-    format = re.sub("<i.*>", "<i>", format)
-    format = re.sub("<div.*>", "<div>", format)
-    format = re.sub(r'\s+', ' ', format)
-    format = re.sub(r'(?<=>)\w+.(?=<)' , ' ', format) #deletes words existing between elements
+    format = re.sub(r'\s+', ' ', parsed_file) #flattens file to one line
+    format = re.sub(r'[\s\S]*?(?=<body>)', '', format) #removes from beginning of file up to (not including) <body>)
     format = re.sub(r'</body>.*', '</body>', format) #deletes anything after </body>
-    organize_tags(format)
+    format = re.sub("<nav.*?>", "<nav>", format) #cleans up open nav tag
+    format = re.sub("<a.*?>", "<a>", format) #cleans up open a tag
+    format = re.sub("<script.*?>", "<script><script>", format) #cleans up open script tag and adds closing tag
+    format = re.sub("<img.*?>", "<img></img>", format) #cleans up open img tag and adds closing tag
+    format = re.sub("<i.*?>", "<i>", format) #cleans up open i tag and adds closing tag
+    format = re.sub("<div.*?>", "<div>", format) #cleans up open div tag and adds closing tag
+    format = re.sub("(?<=>).*?(?=<)", "", format) #deletes all text between elements
+    #organize_tags(format)
     return format
 
 def organize_tags(format):
