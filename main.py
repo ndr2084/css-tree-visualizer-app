@@ -2,6 +2,45 @@ import re
 import pprint as pretty
 from collections import defaultdict
 
+class HtmlNode:
+    def __init__(self, value, name):
+        self.name = name
+        self.span = [0] * 2
+        self.span[0] = value
+        self.children = []  # a list of TreeNode instances
+
+    def add_child(self, child_node):
+        self.children.append(child_node)
+
+    def add_interval(self, value):
+        self.span[1] = value
+"""
+    for key in nodes:
+        print(nodes[key])
+        for elements in nodes[key]:
+            print(elements)
+            print(nodes[key][elements])
+"""
+
+def create_tree(nodes):
+    #print(nodes[0]["body"][0])
+    length = nodes[0]["body"][1]
+    #print(length)
+
+    initial = 0
+
+    for height in nodes:
+       # print(nodes[key])
+        for element in nodes[height]:
+            print(element,":",nodes[height][element])
+                #print("height:", height)
+                #print("element:", element)
+                #print(nodes[height][element])
+
+
+
+
+
 def read_file(file_name):
     with open(file_name, 'r') as file:
         return file.read()
@@ -41,8 +80,8 @@ def organize_tags(format):
         else:
             raise Exception(f"HTML element formatting error: start of tag neither [a-zA-z] nor /: {element}, {element[1]}")
 
-    pretty.pprint(opening_tags)
-    pretty.pprint(closing_tags)
+    #pretty.pprint(opening_tags)
+    #pretty.pprint(closing_tags)
     return element_list
     #create_element_nodes(element_list)
 
@@ -82,16 +121,8 @@ if __name__ == '__main__':
     element_list = organize_tags(format)
     nodes = create_element_nodes(element_list)
     pretty.pprint(nodes)
-    for i in range(len(nodes)):
-        print(i)
+    create_tree(nodes)
 
-    """
-    for key in nodes:
-        print(nodes[key])
-        for elements in nodes[key]:
-            print(elements)
-            print(nodes[key][elements])
-    """
 
 
 
