@@ -15,3 +15,6 @@
 				    i : [25, 26]
 
 Find invariants for the tree
+#if nodes[height][element][0] == initial:
+    #initial += 1
+    #add it to left node

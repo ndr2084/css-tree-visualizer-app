@@ -120,7 +120,7 @@ if __name__ == '__main__':
     format = format_elements(file)
     element_list = organize_tags(format)
     nodes = create_element_nodes(element_list)
-    pretty.pprint(nodes)
+    #pretty.pprint(nodes)
     create_tree(nodes)
 
 
