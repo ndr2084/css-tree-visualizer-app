@@ -1,4 +1,5 @@
 import re
+import pprint as pretty
 from collections import defaultdict
 
 def read_file(file_name):
@@ -17,7 +18,6 @@ def format_elements(parsed_file):
     format = re.sub("<script.*?>", "<script> ", format) #cleans up open script tag and adds closing tag
     format = re.sub("<i[^mg]*?>", "<i> ", format) #cleans up open i tag and adds closing tag
     format = re.sub("(?<=>).*?(?=<)", " ", format) #deletes all text between elements
-    organize_tags(format)
     return format
 
 def organize_tags(format):
@@ -27,7 +27,7 @@ def organize_tags(format):
     element_list = format.split(" ")
     #print(element_list)
     for element in element_list:
-        print(element[1])
+        #print(element[1])
         if element[1] == "/":
             closing_tags[element].append(index)
             index += 1
@@ -41,40 +41,59 @@ def organize_tags(format):
         else:
             raise Exception(f"HTML element formatting error: start of tag neither [a-zA-z] nor /: {element}, {element[1]}")
 
-    print (opening_tags)
-    print (closing_tags)
-    assign_tag_height(element_list)
+    pretty.pprint(opening_tags)
+    pretty.pprint(closing_tags)
+    return element_list
+    #create_element_nodes(element_list)
 
-def assign_tag_height(element_list):
+def create_element_nodes(element_list):
     height = 0
-    last_tag_open = True
+    span = 0
+
+    # Inner dict factory: returns defaultdict(list)
+    #inner_dict = lambda: defaultdict(list)
+
+    # Outer dict: default value is a new inner dict
+    #height_map = defaultdict(inner_dict)
+    element_span = lambda: defaultdict(list)
+    nodes = defaultdict(element_span)
+
     for element in element_list:
-        if element[1].isalpha() and last_tag_open == True:
-            print(height, element)
+
+        if element[1].isalpha():
+            #print(element, height)
+            #element_height[height].append([element, span])
+            nodes[height][element[1:len(element)-1]].append(span)
             height += 1
-            last_tag_open = True
 
-        if element[1].isalpha() and last_tag_open == False:
-            print(height, element)
-            height += 2
-            last_tag_open = True
-
-        if element[1] == "/" and last_tag_open == True:
+        if element[1] == "/":
             height -= 1
-            last_tag_open = False
-
-        if element[1] == "/" and last_tag_open == False:
-            print(height, element)
-            height -= 1
-
-
-
-
-
+            #print(element, height)
+            nodes[height][element[2:len(element)-1]].append(span)
+            #element_height[height].append([element, span])
+        span += 1
+    #pretty.pprint(element_height)
+    return nodes
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     file = read_file("/home/william/saas-landing-page/index.html")
-    (format_elements(file))
+    format = format_elements(file)
+    element_list = organize_tags(format)
+    nodes = create_element_nodes(element_list)
+    pretty.pprint(nodes)
+    for i in range(len(nodes)):
+        print(i)
+
+    """
+    for key in nodes:
+        print(nodes[key])
+        for elements in nodes[key]:
+            print(elements)
+            print(nodes[key][elements])
+    """
+
+
+
 
 ##TODO: add logic to add the missing closing tags, this will be done in organize_tags and maybe a helper function.
