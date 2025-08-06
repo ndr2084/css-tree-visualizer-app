@@ -50,12 +50,12 @@ def build_tree(tree, node_list, i):
     if i == 0:
         tree = node_list[i]
         i += 1
-        build_tree(tree, node_list, i)
+        return build_tree(tree, node_list, i)
 
     if i > 0:
         test_intersection(tree, node_list[i])
         i += 1
-        build_tree(tree, node_list, i)
+        return build_tree(tree, node_list, i)
 
 #format the dom elements into key:value pairs
 def format_elements(parsed_file):

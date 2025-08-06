@@ -5,27 +5,19 @@ def test_intersection(node_a, node_b):
             node_a.span[0] <= node_b.span[len(node_b.span)-1] <= node_a.span[len(node_a.span)-1]):
         encoder +=0b10
     if (node_b.span[0] <= node_a.span[0] <= node_b.span[len(node_b.span)-1] and
-            node_b.span[0] <= node_a.span[0] <= node_b.span[len(node_b.span)-1]):
+            node_b.span[0] <= node_a.span[len(node_a.span)-1] <= node_b.span[len(node_b.span)-1]):
         encoder +=0b01
 
+    ##node_a is node_b and node_b is node_a
     if encoder == 0b11:
-        print("encoder value:", encoder, "\t", node_b.name, node_a.name, "are the same interval")
+        print("ENCODER:", encoder, "\t", node_b.name, node_a.name, "SAME INTERVAL")
+    ##node_b is subset of node_a
     if encoder == 0b10:
-        print("encoder value:", encoder, "\t", node_b.name, "is a subset of", node_a.name)
-        if node_a.l is None:
-            node_a.l = node_b
-            print(node_a.l.name, "is now a child of", node_a.name)
-        else:
-            test_intersection(node_a.l, node_b)
-
+        print("ENCODER:", encoder, "\t", node_b.name, "SUBSET OF ", node_a.name)
+    ##node_b is a superset of node_a
     if encoder == 0b01:
-        print("encoder value:", encoder, "\t", node_b.name, "is a superset of", node_a.name)
-
+        print("ENCODER:", encoder, "\t", node_b.name, "SUPERSET OF", node_a.name)
+    ##node_b and node_a are disjoint
     if encoder == 0b00:
-        print("encoder value:", encoder, "\t", node_b.name, "and", node_a.name, "are disjoint")
-        print(node_b.name,"[", node_b.span[0], node_b.span[len(node_b.span)-1],"]")
-        print(node_a.name,"[", node_a.span[0], node_a.span[len(node_a.span)-1], "]")
+        print("ENCODER:", encoder, "\t", node_b.name, "AND", node_a.name, "= DISJOINT ")
 
-
-
-    return encoder

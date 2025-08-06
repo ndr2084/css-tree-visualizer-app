@@ -7,7 +7,7 @@ if __name__ == '__main__':
     dicts = create_element_dict(element_list)
     node_list = create_nodes(dicts)
     #dicts = sort_nodes(dicts)
-    build_tree(HtmlNode(None, None), node_list, 0 )
+    tree = build_tree(HtmlNode(None, None), node_list, 0 )
 
 
     #pretty.pprint(nodes)
