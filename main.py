@@ -1,19 +1,10 @@
 import re
 import pprint as pretty
+from html_node import HtmlNode
 from collections import defaultdict
 
-class HtmlNode:
-    def __init__(self, value, name):
-        self.name = name
-        self.span = [0] * 2
-        self.span[0] = value
-        self.children = []  # a list of TreeNode instances
+from intersection_test import has_intersection
 
-    def add_child(self, child_node):
-        self.children.append(child_node)
-
-    def add_interval(self, value):
-        self.span[1] = value
 """
     for key in nodes:
         print(nodes[key])
@@ -22,9 +13,10 @@ class HtmlNode:
             print(nodes[key][elements])
 """
 
-def create_tree(nodes):
+def create_nodes(nodes):
+    node_list = []
     #print(nodes[0]["body"][0])
-    length = nodes[0]["body"][1]
+    #length = nodes[0]["body"][1]
     #print(length)
 
     initial = 0
@@ -32,18 +24,44 @@ def create_tree(nodes):
     for height in nodes:
        # print(nodes[key])
         for element in nodes[height]:
-            print(element,":",nodes[height][element])
+            #print(element,":",nodes[height][element])
+            node = HtmlNode(element, nodes[height][element])
+            node_list.append(node)
+            #print(node.name)
+            #print(node.span)
+
+
                 #print("height:", height)
                 #print("element:", element)
                 #print(nodes[height][element])
-
-
-
-
+    for i in range(0, len(node_list)):
+        print(node_list[i].name,"[",node_list[i].span[0],",", node_list[i].span[1],"]")
+    return node_list
 
 def read_file(file_name):
     with open(file_name, 'r') as file:
         return file.read()
+
+def build_tree(tree, node_list, i):
+
+    if i == len(node_list):
+        return tree
+
+    if i == 0:
+        tree = node_list[i]
+        i += 1
+        build_tree(tree, node_list, i)
+
+
+    if i > 0:
+        if has_intersection(node_list[3], node_list[i]) == 0:
+            pass
+            #print(tree.name, node_list[i].name)
+        i += 1
+        build_tree(tree, node_list, i)
+
+
+
 
 #format the dom elements into key:value pairs
 def format_elements(parsed_file):
@@ -85,7 +103,7 @@ def organize_tags(format):
     return element_list
     #create_element_nodes(element_list)
 
-def create_element_nodes(element_list):
+def create_element_dict(element_list):
     height = 0
     span = 0
 
@@ -114,14 +132,7 @@ def create_element_nodes(element_list):
     #pretty.pprint(element_height)
     return nodes
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    file = read_file("/home/william/saas-landing-page/index.html")
-    format = format_elements(file)
-    element_list = organize_tags(format)
-    nodes = create_element_nodes(element_list)
-    #pretty.pprint(nodes)
-    create_tree(nodes)
+
 
 
 
