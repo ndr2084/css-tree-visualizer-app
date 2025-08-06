@@ -14,10 +14,18 @@ def test_intersection(node_a, node_b):
     ##node_b is subset of node_a
     if encoder == 0b10:
         print("ENCODER:", encoder, "\t", node_b.name, "SUBSET OF ", node_a.name)
+        if node_a.l is None:
+            node_a.l = node_b
+            node_b.p = node_a
+        else:
+            return test_intersection(node_a.l, node_b)
     ##node_b is a superset of node_a
     if encoder == 0b01:
         print("ENCODER:", encoder, "\t", node_b.name, "SUPERSET OF", node_a.name)
     ##node_b and node_a are disjoint
     if encoder == 0b00:
         print("ENCODER:", encoder, "\t", node_b.name, "AND", node_a.name, "= DISJOINT ")
+        node_a.p.r = node_b
+
+##TODO: Correct the logic here
 
