@@ -3,7 +3,7 @@ import pprint as pretty
 from html_node import HtmlNode
 from collections import defaultdict
 
-from intersection_test import has_intersection
+from intersection_test import test_intersection
 
 """
     for key in nodes:
@@ -52,16 +52,10 @@ def build_tree(tree, node_list, i):
         i += 1
         build_tree(tree, node_list, i)
 
-
     if i > 0:
-        if has_intersection(node_list[3], node_list[i]) == 0:
-            pass
-            #print(tree.name, node_list[i].name)
+        test_intersection(tree, node_list[i])
         i += 1
         build_tree(tree, node_list, i)
-
-
-
 
 #format the dom elements into key:value pairs
 def format_elements(parsed_file):
