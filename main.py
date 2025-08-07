@@ -1,5 +1,6 @@
 import re
 import pprint as pretty
+from traversal import print_tree_visual
 from html_node import HtmlNode
 from collections import defaultdict
 
@@ -52,8 +53,8 @@ def build_tree(tree, node_list, i):
         return build_tree(tree, node_list, i)
 
     elif i > 0:
-        a = node_list[2]
-        b = node_list[0]
+        a = tree
+        b = node_list[i]
 
         while a is not None:
             if disjoint(a, b):
@@ -64,11 +65,6 @@ def build_tree(tree, node_list, i):
                 if a.r is not None:
                     a = a.r
                 continue
-            elif b_superset_of_a(a, b):
-                b.l = a
-                b.p = a.p
-                a.p = b
-                break
             elif b_subset_of_a(a, b):
                 if a.l is None:
                     a.l = b
@@ -77,17 +73,8 @@ def build_tree(tree, node_list, i):
                 else:
                     a = a.l
                     continue
-
-
-
-
-
-
-
-
-
-
-
+        i += 1
+        return build_tree(tree, node_list, i)
 
 #format the dom elements into key:value pairs
 def format_elements(parsed_file):
@@ -157,5 +144,9 @@ def create_element_dict(element_list):
         span += 1
     #pretty.pprint(element_height)
     return nodes
+
+def print_tree(tree):
+    print_tree_visual(tree)
+
 
 ##TODO: add logic to add the missing closing tags, this will be done in organize_tags and maybe a helper function.

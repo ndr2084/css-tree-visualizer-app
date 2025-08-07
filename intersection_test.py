@@ -15,7 +15,6 @@ def same_interval(node_a, node_b):
     return False
 
 def b_subset_of_a(node_a, node_b):
-    test_intersection(node_a, node_b)
     if test_intersection(node_a, node_b) == 0b10:
         print(node_b.name, "SUBSET OF ", node_a.name)
         return True
@@ -29,7 +28,7 @@ def b_superset_of_a(node_a, node_b):
 
 def disjoint(node_a, node_b):
     if test_intersection(node_a, node_b)  == 0b00:
-        print(node_b.name, "AND", node_a.name, "= DISJOINT ")
+        print(node_b.name, "AND", node_a.name, "DISJOINT ")
         return True
     return False
 

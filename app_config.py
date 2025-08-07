@@ -6,8 +6,12 @@ if __name__ == '__main__':
     element_list = organize_tags(format)
     dicts = create_element_dict(element_list)
     node_list = create_nodes(dicts)
+
     #dicts = sort_nodes(dicts)
     tree = build_tree(HtmlNode(None, None), node_list, 0 )
+    print_tree(tree)
+
+
 
 
     #pretty.pprint(nodes)
