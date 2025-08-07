@@ -3,7 +3,7 @@ import pprint as pretty
 from html_node import HtmlNode
 from collections import defaultdict
 
-from intersection_test import test_intersection
+from intersection_test import test_intersection, same_interval, b_subset_of_a, b_superset_of_a, disjoint
 
 """
     for key in nodes:
@@ -46,16 +46,48 @@ def build_tree(tree, node_list, i):
 
     if i == len(node_list):
         return tree
-
-    if i == 0:
-        tree = node_list[i]
+    elif i == 0:
+        tree = node_list[0]
         i += 1
         return build_tree(tree, node_list, i)
 
-    if i > 0:
-        test_intersection(tree, node_list[i])
-        i += 1
-        return build_tree(tree, node_list, i)
+    elif i > 0:
+        a = node_list[2]
+        b = node_list[0]
+
+        while a is not None:
+            if disjoint(a, b):
+                if a.r is None:
+                    a.r = b
+                    b.p = a
+                    break
+                if a.r is not None:
+                    a = a.r
+                continue
+            elif b_superset_of_a(a, b):
+                b.l = a
+                b.p = a.p
+                a.p = b
+                break
+            elif b_subset_of_a(a, b):
+                if a.l is None:
+                    a.l = b
+                    b.p = a
+                    a = b.l
+                else:
+                    a = a.l
+                    continue
+
+
+
+
+
+
+
+
+
+
+
 
 #format the dom elements into key:value pairs
 def format_elements(parsed_file):
@@ -125,11 +157,5 @@ def create_element_dict(element_list):
         span += 1
     #pretty.pprint(element_height)
     return nodes
-
-
-
-
-
-
 
 ##TODO: add logic to add the missing closing tags, this will be done in organize_tags and maybe a helper function.
